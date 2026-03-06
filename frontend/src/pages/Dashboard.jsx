@@ -120,7 +120,10 @@ export default function Dashboard() {
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-[14px] shadow-lg shadow-blue-500/30">
               ✦
             </div>
-            <span className="font-display text-xl font-extrabold tracking-tight gradient-text">TaskFlow</span>
+            <div className="flex flex-col">
+              <span className="font-display text-xl font-extrabold tracking-tight gradient-text">TaskFlow</span>
+              <span className="text-[10px] text-gray-400 font-semibold tracking-wide">AI POWERED</span>
+            </div>
           </Link>
 
           {/* User Profile */}

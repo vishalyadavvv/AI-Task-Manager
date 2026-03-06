@@ -15,7 +15,7 @@ connectDB();
 
 const allowedOrigins = [
   "http://localhost:5174",
-  "https://taskflow.vercel.app"
+  "https://aitasksmanager.netlify.app"
 ];
 
 app.use(cors({
