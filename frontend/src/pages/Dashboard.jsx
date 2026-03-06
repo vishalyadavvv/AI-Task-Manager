@@ -64,7 +64,7 @@ export default function Dashboard() {
   const [statFilter, setStat] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingTask, setEditingTask] = useState(null);
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 768 : true);
   const searchRef = useRef(null);
 
   // Debounced search/filter fetch
@@ -108,10 +108,19 @@ export default function Dashboard() {
       <div className="orb w-[600px] h-[600px] bg-blue-500/5 top-[-200px] right-[200px] animate-[orb-float_20s_infinite]" />
       <div className="orb w-[400px] h-[400px] bg-purple-500/5 bottom-[-100px] left-[300px] animate-[orb-float_16s_infinite_-8s]" />
 
-      {/* ── Sidebar ── */}
+      {/* ── Sidebar & Mobile Backdrop ── */}
+      {/* Mobile Backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="md:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-20"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      
       <aside className={`
-        flex-shrink-0 overflow-hidden flex flex-col border-r border-border-subtle bg-bg-base/50 backdrop-blur-xl transition-all duration-300 z-10
-        ${sidebarOpen ? 'w-[260px]' : 'w-0'}
+        flex-shrink-0 overflow-hidden flex flex-col border-r border-border-subtle bg-bg-base/80 backdrop-blur-xl transition-all duration-300 z-30
+        absolute md:relative h-full
+        ${sidebarOpen ? 'w-[260px] translate-x-0' : 'w-[260px] -translate-x-full md:w-0 md:translate-x-0'}
       `}>
         <div className="p-6 flex flex-col gap-8 h-full overflow-y-auto min-w-[260px]">
           

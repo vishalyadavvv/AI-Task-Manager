@@ -48,23 +48,23 @@ export default function LandingPage() {
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 text-center">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           
-          <div className="animate-fade-up hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
+          <div className="animate-hero-reveal opacity-0 hidden sm:flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md mb-8">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             <span className="text-xs font-semibold text-gray-300 tracking-wider">NEW: AI-Powered Auto Routing</span>
           </div>
 
-          <h1 className="animate-fade-up font-display text-5xl sm:text-7xl font-extrabold tracking-tight leading-[1.1] mb-8" style={{ animationDelay: '0.1s' }}>
+          <h1 className="animate-hero-reveal opacity-0 font-display text-5xl sm:text-7xl font-extrabold tracking-tight leading-[1.1] mb-8" style={{ animationDelay: '0.2s' }}>
              Task Management <br/>
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 drop-shadow-sm">
               at the Speed of Thought
             </span>
           </h1>
 
-          <p className="animate-fade-up text-lg sm:text-xl text-gray-400 mb-12 max-w-2xl leading-relaxed" style={{ animationDelay: '0.2s' }}>
+          <p className="animate-hero-reveal opacity-0 text-lg sm:text-xl text-gray-400 mb-12 max-w-2xl leading-relaxed" style={{ animationDelay: '0.4s' }}>
             Experience frictionless productivity. Just dump your thoughts securely, and let Groq AI automatically categorize, prioritize, and structure your workload invisibly in the background.
           </p>
 
-          <div className="animate-fade-up flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto" style={{ animationDelay: '0.3s' }}>
+          <div className="animate-hero-reveal opacity-0 flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto" style={{ animationDelay: '0.6s' }}>
             <Link to={user ? "/dashboard" : "/login"} className="w-full sm:w-auto btn-primary px-8 py-4 text-lg shadow-[0_0_40px_rgba(96,165,250,0.4)] hover:shadow-[0_0_60px_rgba(96,165,250,0.6)] group">
               {user ? "Enter Workspace" : "Start For Free"}
               <span className="inline-block ml-2 text-xl font-normal transition-transform group-hover:translate-x-1 group-hover:-translate-y-1">↗</span>
@@ -72,7 +72,7 @@ export default function LandingPage() {
           </div>
           
           {/* Trust/Social Proof Metric */}
-          <div className="animate-fade-up mt-16 flex items-center gap-4 text-sm text-gray-500 font-medium" style={{ animationDelay: '0.4s' }}>
+          <div className="animate-hero-reveal opacity-0 mt-16 flex items-center gap-4 text-sm text-gray-500 font-medium" style={{ animationDelay: '0.8s' }}>
             <div className="flex -space-x-2">
               {[1,2,3,4].map(i => (
                 <div key={i} className={`w-8 h-8 rounded-full border-2 border-bg-void bg-gradient-to-br flex items-center justify-center text-[10px] text-white/50 backdrop-blur-md
