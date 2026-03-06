@@ -16,6 +16,7 @@ const PRIORITY_CFG = {
 export default function TaskCard({ task, onToggle, onDelete, onEdit, index = 0 }) {
   const [toggling, setToggling] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const cat = CATEGORY_CFG[task.category] || CATEGORY_CFG.Personal;
   const pri = PRIORITY_CFG[task.priority] || PRIORITY_CFG.Medium;
@@ -35,8 +36,9 @@ export default function TaskCard({ task, onToggle, onDelete, onEdit, index = 0 }
 
   return (
     <div
-      className="animate-fade-up group"
+      className="animate-fade-up group cursor-pointer sm:cursor-default"
       style={{ animationDelay: `${index * 0.05}s`, opacity: 0 }}
+      onClick={() => setIsExpanded(!isExpanded)}
     >
       <div className={`
         relative overflow-hidden transition-all duration-300 border rounded-2xl p-5
@@ -137,9 +139,9 @@ export default function TaskCard({ task, onToggle, onDelete, onEdit, index = 0 }
           </time>
         </div>
 
-        {/* AI Insight (Expandable on card hover) */}
+        {/* AI Insight (Expandable on card hover or mobile tap) */}
         {task.aiReasoning && (
-          <div className="max-h-0 overflow-hidden group-hover:max-h-20 transition-all duration-500 ease-in-out">
+          <div className={`overflow-hidden transition-all duration-500 ease-in-out ${isExpanded ? 'max-h-32' : 'max-h-0 group-hover:max-h-32'}`}>
             <div className="mt-3 p-3 bg-blue-400/[0.03] border border-blue-400/10 rounded-xl flex gap-3 items-center">
               <span className="text-sm opacity-60">💡</span>
               <p className="text-[12px] text-gray-400 italic leading-snug">

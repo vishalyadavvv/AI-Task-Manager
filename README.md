@@ -2,6 +2,7 @@
 
 A full-stack task management application built with **Node.js 22 + Express 5** (backend) and **React 19 + Vite 6 + Tailwind CSS v4** (frontend). Features stateless JWT authentication, role-based authorization, and AI-powered task auto-categorization via the Groq API with intelligent fallback.
 
+**Note**: Original AI categorization is always stored and displayed for reference. You can view the AI's reasoning for why a task was given a specific priority and category by simply hovering over the task card (or tapping it on mobile devices).
 ---
 
 ## Technology Stack
@@ -710,7 +711,7 @@ Click the **✎ (edit)** icon on any task card to:
 - Toggle **Status** (Pending ↔ Completed)
 - View original **AI reasoning** (preserved, not editable)
 
-**Note**: Original AI categorization is always stored and displayed for reference.
+**Note**: Original AI categorization is always stored and displayed for reference. You can view the AI's reasoning for why a task was given a specific priority and category by simply hovering over the task card (or tapping it on mobile devices).
 
 ### Marking Tasks Complete
 
