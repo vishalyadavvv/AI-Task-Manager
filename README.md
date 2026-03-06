@@ -126,7 +126,9 @@ cp .env.example .env
 #   MONGODB_URI=mongodb://localhost:27017/taskflow
 #   JWT_SECRET=your-secret-key-here
 #   GROQ_API_KEY=<optional, but recommended>   ← from console.groq.com
-# 
+#
+✓ Backend .env file has been configured and pushed for testing purposes
+
 ```
 
 **Run the server**:

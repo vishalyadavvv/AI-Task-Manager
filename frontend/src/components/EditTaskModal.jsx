@@ -40,7 +40,7 @@ export default function EditTaskModal({ task, onUpdate, onClose }) {
       onClick={(e) => e.target === e.currentTarget && onClose()}
       className="fixed inset-0 bg-bg-void/85 backdrop-blur-sm flex items-center justify-center z-[1000] p-6 animate-fade-in"
     >
-      <div className="animate-scale-in w-full max-w-[520px] bg-bg-base border border-border-subtle rounded-2xl p-8 shadow-2xl flex flex-col gap-6">
+      <div className="animate-scale-in w-full max-w-[520px] max-h-[90vh] overflow-y-auto bg-bg-base border border-border-subtle rounded-2xl p-8 shadow-2xl flex flex-col gap-6">
         
         {/* Header Section */}
         <div className="flex items-center justify-between">
