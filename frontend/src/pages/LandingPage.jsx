@@ -1,8 +1,29 @@
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function LandingPage() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const [profileOpen, setProfileOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking anywhere outside (uses 'click' not 'mousedown' so buttons still fire)
+  useEffect(() => {
+    if (!profileOpen) return;
+    const close = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setProfileOpen(false);
+      }
+    };
+    // Use setTimeout so the current click event doesn't immediately close it
+    const timer = setTimeout(() => {
+      document.addEventListener('click', close);
+    }, 0);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('click', close);
+    };
+  }, [profileOpen]);
   
   return (
     <div className="min-h-screen bg-bg-void flex flex-col relative overflow-hidden font-body text-text-main">
@@ -13,23 +34,61 @@ export default function LandingPage() {
       <div className="absolute top-[40%] left-[50%] w-[300px] h-[300px] bg-cyan-primary/5 rounded-full blur-[80px] -translate-x-1/2 -translate-y-1/2" />
 
       {/* Navigation Bar */}
-      <nav className="relative z-10 flex items-center justify-between px-8 py-6 border-b border-white/5 backdrop-blur-md">
-        <Link to="/" className="flex items-center gap-3 animate-fade-in hover:opacity-80 transition-opacity">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-lg shadow-[0_0_20px_rgba(96,165,250,0.3)]">
+      <nav className="relative z-30 flex items-center justify-between px-4 sm:px-8 py-4 sm:py-6 border-b border-white/5 backdrop-blur-md">
+        <Link to="/" className="flex items-center gap-2 sm:gap-3 animate-fade-in hover:opacity-80 transition-opacity">
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-base sm:text-lg shadow-[0_0_20px_rgba(96,165,250,0.3)]">
             ✦
           </div>
-          <span className="font-display text-2xl font-extrabold tracking-tight gradient-text">TaskFlow</span>
+          <span className="font-display text-xl sm:text-2xl font-extrabold tracking-tight gradient-text">TaskFlow</span>
         </Link>
         
-        <div className="flex items-center gap-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+        <div className="flex items-center gap-2 sm:gap-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
           {user ? (
-            <div className="flex items-center gap-4">
-              <span className="text-sm font-medium text-gray-400 hidden sm:block">
-                Logged in as <strong className="text-white">{user.name}</strong>
-              </span>
-              <Link to="/dashboard" className="btn-primary px-6 py-2.5 shadow-glow">
-                Go to Dashboard
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Link to="/dashboard" className="btn-primary px-3 py-2 sm:px-6 sm:py-2.5 text-sm sm:text-base shadow-glow">
+                <span className="hidden sm:inline">Go to Dashboard</span>
+                <span className="sm:hidden">Dashboard</span>
               </Link>
+
+              {/* Profile Icon with Dropdown */}
+              <div 
+                ref={dropdownRef} 
+                className="relative"
+                onMouseEnter={() => setProfileOpen(true)}
+                onMouseLeave={() => setProfileOpen(false)}
+              >
+                <button 
+                  onClick={() => setProfileOpen(prev => !prev)}
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-[14px] sm:text-[15px] font-bold text-white shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all cursor-pointer border-2 border-white/10 hover:border-white/20"
+                >
+                  {user.name?.charAt(0).toUpperCase()}
+                </button>
+
+                {/* Dropdown Menu */}
+                {profileOpen && (
+                  <div className="absolute right-0 top-[calc(100%+6px)] w-56 bg-[#0f1117] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-[9999]">
+                    <div className="p-4 border-b border-white/5">
+                      <p className="text-sm font-semibold text-white truncate">{user.name}</p>
+                      <p className="text-xs text-gray-500 truncate mt-0.5">{user.email}</p>
+                    </div>
+                    <div className="p-1.5">
+                      <Link 
+                        to="/dashboard" 
+                        className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-gray-300 hover:bg-white/5 hover:text-white transition-colors cursor-pointer"
+                        onClick={() => setProfileOpen(false)}
+                      >
+                        <span className="text-base">📋</span> Dashboard
+                      </Link>
+                      <button 
+                        onClick={() => { setProfileOpen(false); logout(); }}
+                        className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+                      >
+                        <span className="text-base">🚪</span> Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           ) : (
             <>
