@@ -1,6 +1,10 @@
 /**
  * AI Service – Task Auto-Categorization using Groq API (llama-3.3-70b-versatile)
  * Falls back to rule-based heuristic if API key is absent or call fails.
+ * 
+ * Dual-Mode Architecture:
+ *   Mode 1 (AI)        → Context-aware LLM categorization via Groq
+ *   Mode 2 (Heuristic) → Keyword-based fallback for 100% offline operation
  */
 
 const CATEGORIES = ['Work', 'Personal', 'Study', 'Health'];
@@ -8,14 +12,14 @@ const PRIORITIES  = ['High', 'Medium', 'Low'];
 
 // ── Heuristic fallback ────────────────────────────────────────────────────────
 const CATEGORY_KEYWORDS = {
-  Work:     ['meeting','deadline','report','client','project','email','presentation','office','boss','invoice','budget','sprint','deploy','standup','pr','review','ticket','jira','slack'],
-  Study:    ['read','study','learn','course','exam','assignment','research','book','lecture','homework','quiz','chapter','tutorial','practice','notes','university','college'],
-  Health:   ['gym','workout','doctor','medicine','exercise','run','yoga','diet','sleep','appointment','dentist','hospital','therapy','meditate','steps','calories','water'],
-  Personal: ['buy','shop','call','visit','clean','cook','family','friend','pay','bill','travel','vacation','hobby','movie','game','birthday','gift','groceries'],
+  Work:     ['meeting','deadline','report','client','project','email','presentation','office','boss','invoice','budget','sprint','deploy','standup','pr','review','ticket','jira','slack','manager','ceo','stakeholder'],
+  Study:    ['read','study','learn','course','exam','assignment','research','book','lecture','homework','quiz','chapter','tutorial','practice','notes','university','college','test','syllabus','revision'],
+  Health:   ['gym','workout','doctor','medicine','exercise','run','yoga','diet','sleep','appointment','dentist','hospital','therapy','meditate','steps','calories','water','mental','checkup','vitamin'],
+  Personal: ['buy','shop','call','visit','clean','cook','family','friend','pay','bill','travel','vacation','hobby','movie','game','birthday','gift','groceries','rent','laundry'],
 };
 const PRIORITY_KEYWORDS = {
-  High: ['urgent','asap','critical','immediately','deadline','emergency','important','must','today','overdue','priority'],
-  Low:  ['someday','maybe','eventually','optional','low priority','nice to have','whenever'],
+  High: ['urgent','asap','critical','immediately','deadline','emergency','important','must','today','overdue','priority','tonight','tomorrow','due','submit','final','exam','presentation','now','hurry'],
+  Low:  ['someday','maybe','eventually','optional','low priority','nice to have','whenever','no rush','later','free time','leisure'],
 };
 
 function heuristicCategorize(title, description = '') {
@@ -39,16 +43,29 @@ async function aiCategorize(title, description = '') {
     return heuristicCategorize(title, description);
   }
 
-  const prompt = `You are a smart task management assistant. Analyze the task and respond ONLY with valid JSON — no markdown, no explanation.
+  const prompt = `You are an intelligent task management assistant with expertise in productivity and time management. Analyze the following task carefully and respond ONLY with valid JSON — no markdown, no explanation, no wrapping.
 
 Task title: "${title}"
 Task description: "${description || 'N/A'}"
 
-Return exactly:
+CATEGORY RULES (pick exactly one):
+- "Work"     → Professional tasks: meetings, reports, deployments, client work, office duties
+- "Personal" → Daily life: shopping, bills, family, travel, hobbies, errands
+- "Study"    → Learning & academics: exams, courses, homework, research, reading, tutorials
+- "Health"   → Wellness: exercise, doctor visits, medication, diet, mental health, sleep
+
+PRIORITY RULES (pick exactly one):
+- "High"   → Has a near deadline (today, tonight, tomorrow, this week), urgent language, exams, submissions, emergencies, or time-critical consequences
+- "Medium" → Important but no immediate deadline, standard ongoing tasks
+- "Low"    → Optional, someday, leisure, or no time pressure at all
+
+IMPORTANT: If the task mentions "tomorrow", "today", "tonight", "due", "deadline", "exam", "submit", or "test" — it MUST be "High" priority.
+
+Return exactly this JSON structure:
 {
   "category": "<Work | Personal | Study | Health>",
   "priority": "<High | Medium | Low>",
-  "reasoning": "<one concise sentence explaining why>"
+  "reasoning": "<one concise sentence explaining the category and priority choice>"
 }`;
 
   try {
@@ -61,7 +78,7 @@ Return exactly:
       body: JSON.stringify({
         model: 'llama-3.3-70b-versatile',
         max_tokens: 256,
-        temperature: 0.3,
+        temperature: 0.2,
         messages: [{ role: 'user', content: prompt }],
       }),
     });

@@ -522,9 +522,9 @@ If the Groq API is unavailable or `GROQ_API_KEY` is not set, the system automati
 - **Study**: read, learn, course, exam, assignment, research, book, lecture, homework, quiz, etc.
 - **Health**: gym, workout, doctor, medicine, exercise, yoga, diet, sleep, appointment, etc.
 
-**Priority Detection** – Looks for urgency keywords:
-- **High**: urgent, asap, critical, immediately, deadline, emergency, overdue, priority, must, today
-- **Low**: someday, maybe, eventually, optional, nice to have, whenever
+**Priority Detection** – Looks for urgency and deadline keywords:
+- **High**: urgent, asap, critical, immediately, deadline, emergency, overdue, priority, must, today, tomorrow, tonight, due, submit, final, exam, presentation, now, hurry
+- **Low**: someday, maybe, eventually, optional, nice to have, whenever, no rush, later, free time, leisure
 
 **Default**: If no keywords match, defaults to `category: "Personal"` and `priority: "Medium"`
 
